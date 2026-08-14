@@ -1,13 +1,15 @@
-# Python Telegram bot template
+# python-tg-bot-template
 
-An async `python-telegram-bot` skeleton with explicit DI, operation-scoped handlers,
-transport-independent use cases, an isolated Telegram client, and architecture tests.
+Canonical async Telegram bot service skeleton with explicit composition, operation handlers, pure
+use cases, an isolated Telegram adapter, deterministic dependencies, and blocking architecture
+tests.
 
 ```bash
 cp .env.example .env
-python -m pip install -r requirements-dev.txt
-make test
+uv sync --frozen
+make check
 make run
 ```
 
-See `CLAUDE.md` for the mandatory folder and dependency contract.
+Create a named service from the template with `./scripts/rename.sh my-bot`. See `CLAUDE.md` for the
+mandatory boundaries and extension rules.

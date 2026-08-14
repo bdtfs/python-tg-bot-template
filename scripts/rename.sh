@@ -1,17 +1,28 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Rename the template to a new bot name.
-# Usage: ./scripts/rename.sh my-new-bot
-
 NEW_NAME="${1:?Usage: ./scripts/rename.sh <new-bot-name>}"
-OLD_NAME="python-tg-bot"
+OLD_NAME="python-tg-bot-template"
 
-echo "Renaming template from '$OLD_NAME' to '$NEW_NAME'..."
+if [[ ! "$NEW_NAME" =~ ^[a-z][a-z0-9]*(-[a-z0-9]+)*$ ]]; then
+    echo "Name must be kebab-case and start with a letter." >&2
+    exit 1
+fi
 
-# Update Makefile docker image name.
-sed -i '' "s|${OLD_NAME}|${NEW_NAME}|g" Makefile 2>/dev/null || \
-sed -i "s|${OLD_NAME}|${NEW_NAME}|g" Makefile
+ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+FILES=(
+    "$ROOT_DIR/AGENTS.md"
+    "$ROOT_DIR/CLAUDE.md"
+    "$ROOT_DIR/Makefile"
+    "$ROOT_DIR/README.md"
+    "$ROOT_DIR/pyproject.toml"
+    "$ROOT_DIR/requirements.lock"
+    "$ROOT_DIR/uv.lock"
+)
 
-echo "Done. Bot renamed to '$NEW_NAME'."
-echo "Don't forget to update CLAUDE.md if needed."
+sed -i.bak "s|${OLD_NAME}|${NEW_NAME}|g" "${FILES[@]}"
+for file in "${FILES[@]}"; do
+    rm -f "$file.bak"
+done
+
+echo "Renamed template to '$NEW_NAME'."
