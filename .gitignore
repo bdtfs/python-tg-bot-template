@@ -1,6 +1,7 @@
 # Python
 __pycache__/
 *.py[cod]
+.venv/
 *.egg-info/
 dist/
 build/
@@ -26,3 +27,4 @@ Thumbs.db
 .pytest_cache/
 htmlcov/
 .coverage
+coverage.xml
